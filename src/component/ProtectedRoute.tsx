@@ -6,16 +6,14 @@ interface Props {
 }
 
 export default function ProtectedRoute({ children }: Props) {
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-        if (!token) {
-            window.location.href =
-                "http://localhost:8090/oauth2/authorization/google";
-        }
-    }, []);
+    if (!token) {
+        window.location.href =
+            "http://localhost:8090/oauth2/authorization/google";
+        return null;
+    }
 
     return children;
 }
