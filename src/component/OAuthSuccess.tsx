@@ -11,7 +11,7 @@ export default function OAuthSuccess() {
 
         if (token) {
             localStorage.setItem("token", token);
-            navigate("/dashboard");
+            navigate("/");
         } else {
             navigate("/login");
         }

@@ -13,7 +13,7 @@ export default function ProtectedRoute({ children }: Props) {
 
         if (!token) {
             window.location.href =
-                "http://localhost:8080/oauth2/authorization/google";
+                "http://localhost:8090/oauth2/authorization/google";
         }
     }, []);
 
