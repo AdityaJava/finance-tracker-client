@@ -1,15 +1,25 @@
 import { useState, type JSX } from "react";
 import loginBg from "../assets/login-bg.jpg";
+import { authenticate } from "../js/Authentication";
 
 export default function Login(): JSX.Element {
 
     const [username, setUsername] = useState<String>("");
     const [password, setPassword] = useState<String>("");
-
-    const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+    const [error, setError] = useState<String>("")
+    const handleSignIn = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
-        console.log("Username:", username);
-        console.log("Password:", password);
+        if (!username || !password) {
+            setError("Username and Password are required");
+            return;
+        }
+        setError("");
+        try {
+            authenticate(username, password);
+        }
+        catch (error) {
+
+        }
     }
 
     return (
@@ -54,6 +64,11 @@ export default function Login(): JSX.Element {
                                     transition-all duration-200"
                         />
                     </div>
+                    {error && (
+                        <p className="text-red-500 text-sm font-medium">
+                            {error}
+                        </p>
+                    )}
                     {/* Normal Sign In */}
                     <button
                         type="submit"
