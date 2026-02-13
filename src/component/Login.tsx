@@ -14,12 +14,7 @@ export default function Login(): JSX.Element {
             return;
         }
         setError("");
-        try {
-            authenticate(username, password);
-        }
-        catch (error) {
-
-        }
+        authenticate(username, password);
     }
 
     return (
