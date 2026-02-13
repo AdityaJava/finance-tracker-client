@@ -1,7 +1,17 @@
-import type { JSX } from "react";
+import { useState, type JSX } from "react";
 import loginBg from "../assets/login-bg.jpg";
 
 export default function Login(): JSX.Element {
+
+    const [username, setUsername] = useState<String>("");
+    const [password, setPassword] = useState<String>("");
+
+    const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log("Username:", username);
+        console.log("Password:", password);
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
             style={{ backgroundImage: `url(${loginBg})` }}>
@@ -13,11 +23,13 @@ export default function Login(): JSX.Element {
                     Finance Tracker Login
                 </h2>
 
-                <form className="space-y-5">
+                <form className="space-y-5" onSubmit={handleSignIn}>
                     <div>
                         <input
                             type="text"
                             placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             className="w-full px-4 py-3 rounded-lg border border-gray-300 
                                     bg-gray-100 
                                     focus:bg-white 
@@ -31,6 +43,8 @@ export default function Login(): JSX.Element {
                         <input
                             type="password"
                             placeholder="Password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
                             className="w-full px-4 py-3 rounded-lg border border-gray-300 
                                     bg-gray-100 
                                     focus:bg-white 
