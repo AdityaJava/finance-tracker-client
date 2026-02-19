@@ -1,12 +1,14 @@
 import { useState, type JSX } from "react";
 import loginBg from "../assets/login-bg.jpg";
 import { authenticate, signInWithGoogle } from "../js/Authentication";
+import { useNavigate } from "react-router-dom";
 
 export default function Login(): JSX.Element {
 
     const [username, setUsername] = useState<String>("");
     const [password, setPassword] = useState<String>("");
     const [error, setError] = useState<String>("")
+    const navigate = useNavigate();
     const handleSignIn = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         if (!username || !password) {
@@ -70,6 +72,15 @@ export default function Login(): JSX.Element {
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-200 shadow-md"
                     >
                         Sign In
+                    </button>
+
+                    {/* Sign Up */}
+                    <button
+                        type="button"
+                        onClick={() => navigate("/register")}
+                        className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition duration-200 shadow-md"
+                    >
+                        Sign Up
                     </button>
 
                     {/* OR Divider */}

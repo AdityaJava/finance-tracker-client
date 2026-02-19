@@ -3,12 +3,14 @@ import ProtectedRoute from "./component/ProtectedRoute";
 import OAuthSuccess from "./component/OAuthSuccess";
 import Dashboard from "./component/Dashboard";
 import Login from "./component/login";
+import { register } from "module";
 
 function App() {
 
   return (
     <Routes>
       <Route path="/oauth-success" element={<OAuthSuccess />} />
+      <Route path="/register" />
       <Route
         path="/"
         element={
