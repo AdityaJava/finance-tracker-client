@@ -5,5 +5,6 @@ export const API_ENDPOINTS = {
     BASE: API_BASE_URL,
     AUTH_BASE: AUTH_API_BASE_URL,
     LOGIN: `${AUTH_API_BASE_URL}/generate-token`,
+    GOOGLE_LOGIN: `${AUTH_API_BASE_URL}/oauth2/authorization/google`,
     USERS: `${API_BASE_URL}/api/users`,
 };

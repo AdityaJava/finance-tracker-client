@@ -1,6 +1,6 @@
 import { useState, type JSX } from "react";
 import loginBg from "../assets/login-bg.jpg";
-import { authenticate } from "../js/Authentication";
+import { authenticate, signInWithGoogle } from "../js/Authentication";
 
 export default function Login(): JSX.Element {
 
@@ -83,7 +83,7 @@ export default function Login(): JSX.Element {
                     <button
                         type="button"
                         className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold py-3 rounded-lg transition duration-200 shadow-sm"
-                    >
+                        onClick={signInWithGoogle}>
                         <img
                             src="https://www.svgrepo.com/show/475656/google-color.svg"
                             alt="Google"
