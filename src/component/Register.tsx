@@ -36,6 +36,7 @@ export default function Register(): JSX.Element {
         }
         try {
             await signUp(formData);
+            navigate("/")
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 const data = error.response?.data;
