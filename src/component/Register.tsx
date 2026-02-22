@@ -42,6 +42,10 @@ export default function Register(): JSX.Element {
                 if (typeof data === "object" && data !== null) {
                     setFieldErrors(data);
                 }
+                else if (typeof data === "string" && data !== null) {
+                    setError(data);
+                }
+
             } else {
                 setError("Something went wrong");
             }
@@ -69,6 +73,7 @@ export default function Register(): JSX.Element {
                                    focus:bg-white focus:border-blue-500 focus:ring-2 
                                    focus:ring-blue-200 focus:outline-none transition"
                     />
+                    {fieldErrors.username && (<p className="text-red-500">{fieldErrors.username}</p>)}
 
                     <input
                         type="email"
