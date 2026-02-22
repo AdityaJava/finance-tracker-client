@@ -24,10 +24,5 @@ export function signInWithGoogle(): void {
 }
 
 export async function signUp(registerRequest: RegisterRequest) {
-    try {
-        await axios.post(API_ENDPOINTS.SIGN_UP, registerRequest);
-
-    } catch (error) {
-        console.log("Error in signup")
-    }
+    await axios.post(API_ENDPOINTS.SIGN_UP, registerRequest);
 }

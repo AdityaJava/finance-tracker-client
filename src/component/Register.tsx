@@ -1,15 +1,20 @@
 import React, { useState, type JSX } from "react";
 import { useNavigate } from "react-router-dom";
+import loginBg from "../assets/login-bg.jpg";
+import type { RegisterRequest } from "../types/auth.types";
+import { signUp } from "../js/Authentication";
+import axios from "axios";
 
 export default function Register(): JSX.Element {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<RegisterRequest>({
         username: "",
         email: "",
         password: "",
         confirmPassword: ""
     });
     const [error, setError] = useState("");
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
         setFormData({
@@ -18,7 +23,7 @@ export default function Register(): JSX.Element {
         });
     }
 
-    function handleSubmit(e: React.ChangeEvent<HTMLInputElement>): void {
+    async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>): Promise<void> {
         e.preventDefault();
         if (!formData.username || !formData.password || !formData.email || !formData.confirmPassword) {
             setError("All fields are required");
@@ -29,7 +34,18 @@ export default function Register(): JSX.Element {
             setError("Password should match with Confirm Password")
             return;
         }
-
+        try {
+            await signUp(formData);
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                const data = error.response?.data;
+                if (typeof data === "object" && data !== null) {
+                    setFieldErrors(data);
+                }
+            } else {
+                setError("Something went wrong");
+            }
+        }
     }
 
     return (
@@ -75,6 +91,7 @@ export default function Register(): JSX.Element {
                                    focus:bg-white focus:border-blue-500 focus:ring-2 
                                    focus:ring-blue-200 focus:outline-none transition"
                     />
+                    {fieldErrors.password && (<p className="text-red-500">{fieldErrors.password}</p>)}
 
                     <input
                         type="password"
