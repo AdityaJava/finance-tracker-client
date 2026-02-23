@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./component/ProtectedRoute";
 import OAuthSuccess from "./component/auth/OAuthSuccess";
-import Dashboard from "./component/Dashboard";
+import Dashboard from "./component/dashboard/Dashboard";
 import Login from "./component/auth/Login";
 import Register from "./component/auth/Register";
 
