@@ -4,6 +4,7 @@ import OAuthSuccess from "./component/auth/OAuthSuccess";
 import Dashboard from "./component/dashboard/Dashboard";
 import Login from "./component/auth/Login";
 import Register from "./component/auth/Register";
+import AccountList from "./component/account/AccountList";
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
       <Route path="/login" element={
         <Login />
       } />
+      <Route path="/accounts" element={<AccountList />} />
 
     </Routes>
   )
