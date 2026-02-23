@@ -1,13 +1,13 @@
 import { useState, type JSX } from "react";
-import loginBg from "../assets/login-bg.jpg";
-import { authenticate, signInWithGoogle } from "../js/Authentication";
+import loginBg from "../../assets/login-bg.jpg";
+import { authenticate, signInWithGoogle } from "../../js/Authentication";
 import { useNavigate } from "react-router-dom";
 
 export default function Login(): JSX.Element {
 
-    const [username, setUsername] = useState<String>("");
-    const [password, setPassword] = useState<String>("");
-    const [error, setError] = useState<String>("")
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [error, setError] = useState<string>("")
     const navigate = useNavigate();
     const handleSignIn = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();

@@ -1,10 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./component/ProtectedRoute";
-import OAuthSuccess from "./component/OAuthSuccess";
+import OAuthSuccess from "./component/auth/OAuthSuccess";
 import Dashboard from "./component/Dashboard";
-import Login from "./component/login";
-import { register } from "module";
-import Register from "./component/Register";
+import Login from "./component/auth/Login";
+import Register from "./component/auth/Register";
 
 function App() {
 

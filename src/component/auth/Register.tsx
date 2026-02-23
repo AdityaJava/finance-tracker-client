@@ -1,8 +1,8 @@
 import React, { useState, type JSX } from "react";
 import { useNavigate } from "react-router-dom";
-import loginBg from "../assets/login-bg.jpg";
-import type { RegisterRequest } from "../types/auth.types";
-import { authenticate, signUp } from "../js/Authentication";
+import loginBg from "../../assets/login-bg.jpg";
+import type { RegisterRequest } from "../../types/auth.types";
+import { authenticate, signUp } from "../../js/Authentication";
 import axios from "axios";
 
 export default function Register(): JSX.Element {
