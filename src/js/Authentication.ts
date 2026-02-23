@@ -1,7 +1,6 @@
 import axios from "axios";
 import { API_ENDPOINTS } from "./apiConstants";
 import type { RegisterRequest } from "../types/auth.types";
-import { useNavigate } from "react-router-dom";
 
 export async function authenticate(username: String, password: String) {
     try {

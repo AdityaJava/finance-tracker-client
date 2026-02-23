@@ -1,10 +1,13 @@
 import { useState } from "react";
 import type { Account, Category, Transaction } from "../types/finance.types";
 
+type Section = 'addAccount' | 'addCategory' | 'addTransaction' | 'insights' | 'lists';
+
 export default function Dashboard() {
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [activeSection, setActiveSection] = useState<Section>('addAccount');
 
     // Form states
     const [newAccount, setNewAccount] = useState({ name: "", type: "", balance: 0 });
@@ -65,17 +68,61 @@ export default function Dashboard() {
     const netBalance = totalIncome - totalExpense;
 
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
-            <h1 className="text-3xl font-bold text-center mb-8">Finance Tracker Dashboard</h1>
+        <div className="min-h-screen bg-gray-100 flex">
+            {/* Sidebar */}
+            <div className="w-64 bg-white shadow-md p-4">
+                <h2 className="text-xl font-semibold mb-4">Dashboard Menu</h2>
+                <ul className="space-y-2">
+                    <li>
+                        <button
+                            onClick={() => setActiveSection('addAccount')}
+                            className={`w-full text-left p-2 rounded ${activeSection === 'addAccount' ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
+                        >
+                            Add Account
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => setActiveSection('addCategory')}
+                            className={`w-full text-left p-2 rounded ${activeSection === 'addCategory' ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
+                        >
+                            Add Category
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => setActiveSection('addTransaction')}
+                            className={`w-full text-left p-2 rounded ${activeSection === 'addTransaction' ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
+                        >
+                            Add Transaction
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => setActiveSection('insights')}
+                            className={`w-full text-left p-2 rounded ${activeSection === 'insights' ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
+                        >
+                            Insights
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => setActiveSection('lists')}
+                            className={`w-full text-left p-2 rounded ${activeSection === 'lists' ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
+                        >
+                            View Lists
+                        </button>
+                    </li>
+                </ul>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Configuration Section */}
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold mb-4">Configuration</h2>
+            {/* Main Content */}
+            <div className="flex-1 p-6">
+                <h1 className="text-3xl font-bold mb-8">Finance Tracker Dashboard</h1>
 
-                    {/* Add Account */}
-                    <div className="mb-4">
-                        <h3 className="font-medium mb-2">Add Account</h3>
+                {activeSection === 'addAccount' && (
+                    <div className="bg-white p-6 rounded-lg shadow-md max-w-md">
+                        <h2 className="text-xl font-semibold mb-4">Add Account</h2>
                         <input
                             type="text"
                             placeholder="Account Name"
@@ -99,10 +146,11 @@ export default function Dashboard() {
                         />
                         <button onClick={addAccount} className="w-full bg-blue-500 text-white p-2 rounded">Add Account</button>
                     </div>
+                )}
 
-                    {/* Add Category */}
-                    <div>
-                        <h3 className="font-medium mb-2">Add Category</h3>
+                {activeSection === 'addCategory' && (
+                    <div className="bg-white p-6 rounded-lg shadow-md max-w-md">
+                        <h2 className="text-xl font-semibold mb-4">Add Category</h2>
                         <input
                             type="text"
                             placeholder="Category Name"
@@ -120,102 +168,105 @@ export default function Dashboard() {
                         </select>
                         <button onClick={addCategory} className="w-full bg-green-500 text-white p-2 rounded">Add Category</button>
                     </div>
-                </div>
+                )}
 
-                {/* Add Transactions */}
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold mb-4">Add Transaction</h2>
-                    <input
-                        type="number"
-                        placeholder="Amount"
-                        value={newTransaction.amount}
-                        onChange={(e) => setNewTransaction({ ...newTransaction, amount: parseFloat(e.target.value) || 0 })}
-                        className="w-full p-2 border rounded mb-2"
-                    />
-                    <select
-                        value={newTransaction.categoryId}
-                        onChange={(e) => setNewTransaction({ ...newTransaction, categoryId: e.target.value })}
-                        className="w-full p-2 border rounded mb-2"
-                    >
-                        <option value="">Select Category</option>
-                        {categories.map(cat => (
-                            <option key={cat.id} value={cat.id}>{cat.name}</option>
-                        ))}
-                    </select>
-                    <select
-                        value={newTransaction.accountId}
-                        onChange={(e) => setNewTransaction({ ...newTransaction, accountId: e.target.value })}
-                        className="w-full p-2 border rounded mb-2"
-                    >
-                        <option value="">Select Account</option>
-                        {accounts.map(acc => (
-                            <option key={acc.id} value={acc.id}>{acc.name}</option>
-                        ))}
-                    </select>
-                    <input
-                        type="date"
-                        value={newTransaction.date}
-                        onChange={(e) => setNewTransaction({ ...newTransaction, date: e.target.value })}
-                        className="w-full p-2 border rounded mb-2"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Description"
-                        value={newTransaction.description}
-                        onChange={(e) => setNewTransaction({ ...newTransaction, description: e.target.value })}
-                        className="w-full p-2 border rounded mb-2"
-                    />
-                    <button onClick={addTransaction} className="w-full bg-purple-500 text-white p-2 rounded">Add Transaction</button>
-                </div>
-
-                {/* Insights */}
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold mb-4">Insights</h2>
-                    <div className="space-y-2">
-                        <p>Total Income: <span className="font-bold text-green-600">${totalIncome.toFixed(2)}</span></p>
-                        <p>Total Expenses: <span className="font-bold text-red-600">${totalExpense.toFixed(2)}</span></p>
-                        <p>Net Balance: <span className={`font-bold ${netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>${netBalance.toFixed(2)}</span></p>
+                {activeSection === 'addTransaction' && (
+                    <div className="bg-white p-6 rounded-lg shadow-md max-w-md">
+                        <h2 className="text-xl font-semibold mb-4">Add Transaction</h2>
+                        <input
+                            type="number"
+                            placeholder="Amount"
+                            value={newTransaction.amount}
+                            onChange={(e) => setNewTransaction({ ...newTransaction, amount: parseFloat(e.target.value) || 0 })}
+                            className="w-full p-2 border rounded mb-2"
+                        />
+                        <select
+                            value={newTransaction.categoryId}
+                            onChange={(e) => setNewTransaction({ ...newTransaction, categoryId: e.target.value })}
+                            className="w-full p-2 border rounded mb-2"
+                        >
+                            <option value="">Select Category</option>
+                            {categories.map(cat => (
+                                <option key={cat.id} value={cat.id}>{cat.name}</option>
+                            ))}
+                        </select>
+                        <select
+                            value={newTransaction.accountId}
+                            onChange={(e) => setNewTransaction({ ...newTransaction, accountId: e.target.value })}
+                            className="w-full p-2 border rounded mb-2"
+                        >
+                            <option value="">Select Account</option>
+                            {accounts.map(acc => (
+                                <option key={acc.id} value={acc.id}>{acc.name}</option>
+                            ))}
+                        </select>
+                        <input
+                            type="date"
+                            value={newTransaction.date}
+                            onChange={(e) => setNewTransaction({ ...newTransaction, date: e.target.value })}
+                            className="w-full p-2 border rounded mb-2"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Description"
+                            value={newTransaction.description}
+                            onChange={(e) => setNewTransaction({ ...newTransaction, description: e.target.value })}
+                            className="w-full p-2 border rounded mb-2"
+                        />
+                        <button onClick={addTransaction} className="w-full bg-purple-500 text-white p-2 rounded">Add Transaction</button>
                     </div>
-                    <h3 className="font-medium mt-4 mb-2">Recent Transactions</h3>
-                    <ul className="space-y-1">
-                        {transactions.slice(-5).map(t => {
-                            const category = categories.find(c => c.id === t.categoryId);
-                            return (
-                                <li key={t.id} className="text-sm">
-                                    {t.description} - ${t.amount} ({category?.name})
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
-            </div>
+                )}
 
-            {/* Lists */}
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white p-4 rounded-lg shadow-md">
-                    <h3 className="font-semibold mb-2">Accounts</h3>
-                    <ul>
-                        {accounts.map(acc => (
-                            <li key={acc.id}>{acc.name} - {acc.type} - ${acc.balance}</li>
-                        ))}
-                    </ul>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow-md">
-                    <h3 className="font-semibold mb-2">Categories</h3>
-                    <ul>
-                        {categories.map(cat => (
-                            <li key={cat.id}>{cat.name} ({cat.type})</li>
-                        ))}
-                    </ul>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow-md">
-                    <h3 className="font-semibold mb-2">Transactions</h3>
-                    <ul>
-                        {transactions.map(t => (
-                            <li key={t.id}>{t.description} - ${t.amount}</li>
-                        ))}
-                    </ul>
-                </div>
+                {activeSection === 'insights' && (
+                    <div className="bg-white p-6 rounded-lg shadow-md">
+                        <h2 className="text-xl font-semibold mb-4">Insights</h2>
+                        <div className="space-y-2">
+                            <p>Total Income: <span className="font-bold text-green-600">${totalIncome.toFixed(2)}</span></p>
+                            <p>Total Expenses: <span className="font-bold text-red-600">${totalExpense.toFixed(2)}</span></p>
+                            <p>Net Balance: <span className={`font-bold ${netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>${netBalance.toFixed(2)}</span></p>
+                        </div>
+                        <h3 className="font-medium mt-4 mb-2">Recent Transactions</h3>
+                        <ul className="space-y-1">
+                            {transactions.slice(-5).map(t => {
+                                const category = categories.find(c => c.id === t.categoryId);
+                                return (
+                                    <li key={t.id} className="text-sm">
+                                        {t.description} - ${t.amount} ({category?.name})
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                )}
+
+                {activeSection === 'lists' && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="bg-white p-4 rounded-lg shadow-md">
+                            <h3 className="font-semibold mb-2">Accounts</h3>
+                            <ul>
+                                {accounts.map(acc => (
+                                    <li key={acc.id}>{acc.name} - {acc.type} - ${acc.balance}</li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg shadow-md">
+                            <h3 className="font-semibold mb-2">Categories</h3>
+                            <ul>
+                                {categories.map(cat => (
+                                    <li key={cat.id}>{cat.name} ({cat.type})</li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg shadow-md">
+                            <h3 className="font-semibold mb-2">Transactions</h3>
+                            <ul>
+                                {transactions.map(t => (
+                                    <li key={t.id}>{t.description} - ${t.amount}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
