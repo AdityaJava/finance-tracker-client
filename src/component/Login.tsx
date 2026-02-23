@@ -16,7 +16,8 @@ export default function Login(): JSX.Element {
             return;
         }
         setError("");
-        authenticate(username, password);
+        await authenticate(username, password);
+        navigate('/');
     }
 
     return (

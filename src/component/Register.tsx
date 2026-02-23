@@ -2,7 +2,7 @@ import React, { useState, type JSX } from "react";
 import { useNavigate } from "react-router-dom";
 import loginBg from "../assets/login-bg.jpg";
 import type { RegisterRequest } from "../types/auth.types";
-import { signUp } from "../js/Authentication";
+import { authenticate, signUp } from "../js/Authentication";
 import axios from "axios";
 
 export default function Register(): JSX.Element {
@@ -36,7 +36,8 @@ export default function Register(): JSX.Element {
         }
         try {
             await signUp(formData);
-            navigate("/")
+            await authenticate(formData.username, formData.password);
+            navigate('/');
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 const data = error.response?.data;
