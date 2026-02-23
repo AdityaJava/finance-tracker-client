@@ -27,7 +27,7 @@ export default function AccountList(): JSX.Element {
 
     return (
         <div>
-
+            {loading ? <>Loading..</> : <>Loaded</>}
         </div>
     )
 }
