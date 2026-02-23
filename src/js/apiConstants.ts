@@ -9,3 +9,7 @@ export const API_ENDPOINTS = {
     SIGN_UP: `${AUTH_API_BASE_URL}/api/auth/signup`,
     USERS: `${API_BASE_URL}/api/users`,
 };
+
+export const ACCOUNT_ENDPOINTS = {
+    ACCOUNTS_PAGE: `${API_BASE_URL}/api/accounts`
+}
