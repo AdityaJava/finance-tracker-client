@@ -16,7 +16,7 @@ export default function AccountList(): JSX.Element {
 
     useEffect(() => {
         loadAccounts(0, 10);
-    });
+    }, []);
 
     const loadAccounts = async (pageNumber: number, pageSize: number): Promise<void> => {
         setLoading(true);
