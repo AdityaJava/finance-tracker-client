@@ -5,6 +5,7 @@ import Dashboard from "./component/dashboard/Dashboard";
 import Login from "./component/auth/Login";
 import Register from "./component/auth/Register";
 import AccountList from "./component/account/AccountList";
+import Layout from "./component/layout/Layout";
 
 function App() {
 
@@ -12,20 +13,16 @@ function App() {
     <Routes>
       <Route path="/oauth-success" element={<OAuthSuccess />} />
       <Route path="/register" element={<Register />} />
-      <Route
-        path="/"
-        element={
-          // Means <ProtectedRoute children={<Dashboard />} />
+      <Route path="/" element={<Layout />}>
+        <Route path="accounts" element={
           <ProtectedRoute>
-            <Dashboard />
+            <AccountList />
           </ProtectedRoute>
-        }
-      />
+        } />
+      </Route>
       <Route path="/login" element={
         <Login />
       } />
-      <Route path="/accounts" element={<AccountList />} />
-
     </Routes>
   )
 }

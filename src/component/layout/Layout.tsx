@@ -1,12 +1,12 @@
-import Sidebar from "./Sidebar";
+import { Outlet } from "react-router-dom";
+import Sidebar from "../dashboard/Sidebar";
 
-
-export default function Dashboard() {
+export default function Layout() {
     return (
         <div className="flex">
             <Sidebar />
             <div className="flex-1 p-6">
-                <h1 className="text-2xl font-bold">Dashboard</h1>
+                <Outlet />
             </div>
         </div>
     )
