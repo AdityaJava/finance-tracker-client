@@ -5,6 +5,11 @@ export interface Account {
     active: boolean
 }
 
+export interface Category {
+    id?: number,
+    name: string
+}
+
 export const ACCOUNT_TYPES = {
     CASH: "CASH",
     BANK: "BANK",

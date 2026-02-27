@@ -15,3 +15,9 @@ export const ACCOUNT_ENDPOINTS = {
     ACCOUNTS_PAGE: `${API_BASE_URL}/api/accounts`,
     CREATE_ACCOUNT: `${API_BASE_URL}/api/accounts`,
 }
+
+export const CATEGORY_ENDPOINTS = {
+    BASE: `${API_BASE_URL}/api/categories`,
+    CATEGORIES_PAGE: `${API_BASE_URL}/api/categories`,
+    CREATE_CATEGORY: `${API_BASE_URL}/api/categories`,
+}

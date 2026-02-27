@@ -5,6 +5,7 @@ import Dashboard from "./component/dashboard/Dashboard";
 import Login from "./component/auth/Login";
 import Register from "./component/auth/Register";
 import AccountList from "./component/account/AccountList";
+import CategoryList from "./component/category/CategoryList";
 import Layout from "./component/layout/Layout";
 
 function App() {
@@ -17,6 +18,11 @@ function App() {
         <Route path="accounts" element={
           <ProtectedRoute>
             <AccountList />
+          </ProtectedRoute>
+        } />
+        <Route path="categories" element={
+          <ProtectedRoute>
+            <CategoryList />
           </ProtectedRoute>
         } />
       </Route>

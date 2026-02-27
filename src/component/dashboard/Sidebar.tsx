@@ -12,7 +12,12 @@ export default function Sidebar(): JSX.Element {
                         Accounts
                     </Link>
                 </li>
-                <li className="cursor-pointer hover:text-gray-300">Categories</li>
+                <li className="cursor-pointer hover:text-gray-300">
+                    <Link to="/categories" className="cursor-pointer hover:text-gray-300"
+                    >
+                        Categories
+                    </Link>
+                </li>
                 <li className="cursor-pointer hover:text-gray-300">Transaction</li>
             </ul>
         </div>
