@@ -52,7 +52,9 @@ export default function CategoryList(): JSX.Element {
         await deleteCategoryById(elementId);
         loadCategories(0, 10);
     };
-
+    const startEditing = () => {
+        console.log("Editing");
+    }
     return (
         <div className="min-h-screen bg-gray-50 p-6">
             <div className="max-w-6xl mx-auto">
@@ -76,7 +78,7 @@ export default function CategoryList(): JSX.Element {
                                 className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-5 border border-gray-100"
                             >
                                 <div className="flex justify-between items-center mb-3">
-                                    <h2 className="text-lg font-semibold text-gray-800">
+                                    <h2 className="text-lg font-semibold text-gray-800" onClick={startEditing}>
                                         {element.name}
                                     </h2>
                                 </div>
