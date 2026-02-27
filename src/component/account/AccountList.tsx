@@ -1,7 +1,7 @@
 import { useEffect, useState, type JSX, type ReactEventHandler } from "react";
 import { ACCOUNT_TYPES, type Account } from "../../types/finance.types";
 import type { Page } from "../../types/page.types";
-import { fetchAccounts } from "../../js/Account";
+import { createAccount, fetchAccounts } from "../../js/Account";
 
 export default function AccountList(): JSX.Element {
     const intialAccountPageState: Page<Account> = {
@@ -16,7 +16,7 @@ export default function AccountList(): JSX.Element {
         name: "",
         type: "",
         openingBalance: 0,
-        isActive: false
+        active: false
     });
 
     const [accontPage, setAccountPage] = useState<Page<Account>>(intialAccountPageState);
@@ -33,7 +33,6 @@ export default function AccountList(): JSX.Element {
         setLoading(false);
     };
     const handleChangeInNewAccount = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        console.log(e)
         const { name, type, value } = e.target;
 
         let updatedValue: string | number | boolean;
@@ -54,8 +53,11 @@ export default function AccountList(): JSX.Element {
             [name]: updatedValue
         });
     }
-    const addNewAccount = () => {
-        console.log(newAccount)
+    const addNewAccount = async () => {
+        console.log(newAccount);
+        const response = await createAccount(newAccount);
+        await loadAccounts(0, 10);
+        console.log(response);
     }
     return (
         <div className="min-h-screen bg-gray-50 p-6">
@@ -84,12 +86,12 @@ export default function AccountList(): JSX.Element {
                                         {element.name}
                                     </h2>
                                     <span
-                                        className={`text-xs px-3 py-1 rounded-full font-medium ${element.isActive
+                                        className={`text-xs px-3 py-1 rounded-full font-medium ${element.active
                                             ? "bg-green-100 text-green-700"
                                             : "bg-red-100 text-red-600"
                                             }`}
                                     >
-                                        {element.isActive ? "Active" : "Inactive"}
+                                        {element.active ? "Active" : "Inactive"}
                                     </span>
                                 </div>
 
@@ -109,41 +111,96 @@ export default function AccountList(): JSX.Element {
                                 </div>
                             </div>
                         ))}
-                        <div>
-                            <div className="flex justify-between items-center mb-3">
-                            </div>
+                        <div className="max-w-md mx-auto bg-white shadow-lg rounded-2xl p-6 border border-gray-100">
 
-                            <div className="space-y-2 text-sm text-gray-600">
-                                <p>
-                                    <label>Name:</label>
-                                    <input type="text" value={newAccount.name} onChange={handleChangeInNewAccount} name="name"></input>
-                                </p>
+                            <h2 className="text-xl font-semibold text-gray-800 mb-6">
+                                Add New Account
+                            </h2>
 
-                                <p>
-                                    <label>Type</label>
-                                    <select value={newAccount.type} onChange={handleChangeInNewAccount} name="type">
-                                        <option>Select</option>
-                                        {Object.values(ACCOUNT_TYPES).map(type => (
-                                            <option key={type} value={type} >
+                            <div className="space-y-5">
+
+                                {/* Name */}
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-medium text-gray-700 mb-1">
+                                        Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={newAccount.name}
+                                        onChange={handleChangeInNewAccount}
+                                        className="border border-gray-300 rounded-lg px-3 py-2 
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 
+                   focus:border-blue-500 transition"
+                                    />
+                                </div>
+
+                                {/* Type */}
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-medium text-gray-700 mb-1">
+                                        Type
+                                    </label>
+                                    <select
+                                        name="type"
+                                        value={newAccount.type}
+                                        onChange={handleChangeInNewAccount}
+                                        className="border border-gray-300 rounded-lg px-3 py-2 
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 
+                   focus:border-blue-500 transition bg-white"
+                                    >
+                                        <option value="">Select Type</option>
+                                        {Object.values(ACCOUNT_TYPES).map((type) => (
+                                            <option key={type} value={type}>
                                                 {type}
                                             </option>
-                                        )
-                                        )}
+                                        ))}
                                     </select>
-                                </p>
-                                <p>
-                                    <label>Opening Balance:</label>
-                                    <input type="number" value={newAccount.openingBalance} onChange={handleChangeInNewAccount} name="openingBalance"></input>
-                                </p>
-                                <p>
-                                    <label>
-                                        <input type="checkbox" id="featureToggle" checked={newAccount.isActive} onChange={handleChangeInNewAccount} name="isActive" />
-                                        Enable Feature
-                                    </label>
-                                </p>
-                                <button type="submit" onClick={addNewAccount}>Submit</button>
-                            </div>
+                                </div>
 
+                                {/* Opening Balance */}
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-medium text-gray-700 mb-1">
+                                        Opening Balance
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="openingBalance"
+                                        value={newAccount.openingBalance}
+                                        onChange={handleChangeInNewAccount}
+                                        className="border border-gray-300 rounded-lg px-3 py-2 
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 
+                   focus:border-blue-500 transition"
+                                    />
+                                </div>
+
+                                {/* Checkbox */}
+                                <div className="flex items-center space-x-2">
+                                    <input
+                                        type="checkbox"
+                                        id="active"
+                                        name="active"
+                                        checked={newAccount.active}
+                                        onChange={handleChangeInNewAccount}
+                                        className="h-4 w-4 text-blue-600 border-gray-300 rounded 
+                   focus:ring-blue-500"
+                                    />
+                                    <label htmlFor="active" className="text-sm text-gray-700">
+                                        Enable Account
+                                    </label>
+                                </div>
+
+                                {/* Submit Button */}
+                                <button
+                                    type="submit"
+                                    onClick={addNewAccount}
+                                    className="w-full bg-blue-600 text-white font-medium 
+                 py-2.5 rounded-lg hover:bg-blue-700 
+                 transition duration-200 shadow-md"
+                                >
+                                    Submit
+                                </button>
+
+                            </div>
                         </div>
                     </div>
                 )}

@@ -13,3 +13,8 @@ export async function fetchAccounts(pageNumber: number, pageSize: number): Promi
     });
     return response.data;
 }
+
+export async function createAccount(account: Account) {
+    const response = await api.post(ACCOUNT_ENDPOINTS.CREATE_ACCOUNT, account)
+    return response.data;
+}
