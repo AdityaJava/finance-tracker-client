@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
 };
 
 export const ACCOUNT_ENDPOINTS = {
+    BASE: `${API_BASE_URL}/api/accounts`,
     ACCOUNTS_PAGE: `${API_BASE_URL}/api/accounts`,
     CREATE_ACCOUNT: `${API_BASE_URL}/api/accounts`,
 }

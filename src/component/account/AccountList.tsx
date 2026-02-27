@@ -1,7 +1,8 @@
 import { useEffect, useState, type JSX, type ReactEventHandler } from "react";
 import { ACCOUNT_TYPES, type Account } from "../../types/finance.types";
 import type { Page } from "../../types/page.types";
-import { createAccount, fetchAccounts } from "../../js/Account";
+import { createAccount, deleteAccountById, fetchAccounts } from "../../js/Account";
+import deleteIcon from "../../assets/delete.png";
 
 export default function AccountList(): JSX.Element {
     const intialAccountPageState: Page<Account> = {
@@ -59,6 +60,11 @@ export default function AccountList(): JSX.Element {
         await loadAccounts(0, 10);
         console.log(response);
     }
+    const deleteAccount = async (elementId: number) => {
+        console.log(elementId)
+        await deleteAccountById(elementId);
+        loadAccounts(0, 10)
+    }
     return (
         <div className="min-h-screen bg-gray-50 p-6">
             <div className="max-w-6xl mx-auto">
@@ -108,6 +114,13 @@ export default function AccountList(): JSX.Element {
                                         </span>{" "}
                                         ₹{element.openingBalance}
                                     </p>
+                                </div>
+                                <div className="m-2 ml-0">
+                                    <button onClick={() => deleteAccount(element.id)} className="p-2 rounded-lg hover:bg-red-100 transition-colors duration-200"
+                                    >
+                                        <img src={deleteIcon} className="w-5 h-5"
+                                            alt="delete" />
+                                    </button>
                                 </div>
                             </div>
                         ))}

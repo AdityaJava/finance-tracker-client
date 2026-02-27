@@ -18,3 +18,8 @@ export async function createAccount(account: Account) {
     const response = await api.post(ACCOUNT_ENDPOINTS.CREATE_ACCOUNT, account)
     return response.data;
 }
+
+export async function deleteAccountById(accountId: number) {
+    const response = await api.delete(ACCOUNT_ENDPOINTS.BASE + '/' + accountId)
+    return response.data;
+}
