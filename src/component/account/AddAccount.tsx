@@ -2,7 +2,11 @@ import { useState, type JSX } from "react";
 import { ACCOUNT_TYPES, type Account } from "../../types/finance.types";
 import { createAccount } from "../../js/Account";
 import type { LoadAccountProps } from "../../types/addaccount.types";
-
+// same as
+// function AddAccount(props: LoadAccountProps) {
+//     const loadAccounts = props.loadAccounts;
+// }
+// This is object  Destructuring
 export default function AddAccount({ loadAccounts }: LoadAccountProps): JSX.Element {
 
     const [newAccount, setNewAccount] = useState<Account>({
