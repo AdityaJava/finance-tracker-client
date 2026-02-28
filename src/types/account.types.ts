@@ -4,3 +4,7 @@ export interface AccountProps {
     element: Account,
     loadAccounts: (pageNumber: number, pageSize: number) => Promise<void>
 }
+
+export interface EditAccountProps {
+    currentAccount: Account
+}
