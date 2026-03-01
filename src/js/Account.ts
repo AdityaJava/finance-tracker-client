@@ -23,3 +23,8 @@ export async function deleteAccountById(accountId: number) {
     const response = await api.delete(ACCOUNT_ENDPOINTS.BASE + '/' + accountId)
     return response.data;
 }
+
+export async function updateAccount(updatedAccount: Account) {
+    const response = await api.put(ACCOUNT_ENDPOINTS.BASE + '/' + updatedAccount.id, updatedAccount)
+    return response.data;
+}

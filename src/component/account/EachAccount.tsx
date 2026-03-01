@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { deleteAccountById } from "../../js/Account";
+import { deleteAccountById, updateAccount } from "../../js/Account";
 import type { Account } from "../../types/finance.types";
 import type { AccountProps } from "../../types/account.types";
 import deleteIcon from "../../assets/delete.png";
+import { EditAccount } from "./EditAccount";
 
 export default function EachAccount({ element, loadAccounts }: AccountProps) {
 
@@ -13,8 +14,14 @@ export default function EachAccount({ element, loadAccounts }: AccountProps) {
     }
     const [editMode, setEditMode] = useState<boolean>(false);
 
-    const editing = (elementId: number) => {
+    const editing = () => {
         setEditMode(true);
+    }
+
+    const handleUpdate = async (updatedAccount: Account) => {
+        await updateAccount(updatedAccount);
+        setEditMode(false);
+        loadAccounts(0, 10);
     }
 
     return (
@@ -22,9 +29,9 @@ export default function EachAccount({ element, loadAccounts }: AccountProps) {
             <div
                 key={element.id}
                 className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-5 border border-gray-100"
-            >
+                onClick={() => editing()}>
                 <div className="flex justify-between items-center mb-3">
-                    <h2 className="text-lg font-semibold text-gray-800" onClick={() => editing(element.id)}>
+                    <h2 className="text-lg font-semibold text-gray-800" >
                         {element.name}
                     </h2>
                     <span
@@ -58,6 +65,6 @@ export default function EachAccount({ element, loadAccounts }: AccountProps) {
                             alt="delete" />
                     </button>
                 </div>
-            </div> : <>edit</>)
+            </div> : <EditAccount currentAccount={element} handleUpdate={handleUpdate} />)
     )
 }

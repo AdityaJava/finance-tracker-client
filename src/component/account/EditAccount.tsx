@@ -1,13 +1,16 @@
-import type { JSX } from "react";
+import { useState, type JSX } from "react";
 import type { EditAccountProps } from "../../types/account.types";
+import { ACCOUNT_TYPES, type Account } from "../../types/finance.types";
+import { updateAccount } from "../../js/Account";
 
-export function EditAccount({ currentAccount }: EditAccountProps): JSX.Element {
+export function EditAccount({ currentAccount, handleUpdate }: EditAccountProps): JSX.Element {
+    const [updatedAccount, setUpdatedAccount] = useState<Account>(currentAccount);
 
     const handleChangeInNewAccount = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, type, value } = e.target;
 
         let updatedValue: string | number | boolean;
-
+        console.log(name);
         if (type === "checkbox") {
             updatedValue = (e.target as HTMLInputElement).checked;
         }
@@ -17,6 +20,13 @@ export function EditAccount({ currentAccount }: EditAccountProps): JSX.Element {
         else {
             updatedValue = value
         }
+        setUpdatedAccount({
+            ...updatedAccount,
+            // [e.target.name]: e.target.value
+            [name]: updatedValue,
+            id: currentAccount.id
+        });
+
     }
 
     return (
@@ -28,7 +38,7 @@ export function EditAccount({ currentAccount }: EditAccountProps): JSX.Element {
                 <input
                     type="text"
                     name="name"
-                    value={currentAccount.name}
+                    value={updatedAccount.name}
                     onChange={handleChangeInNewAccount}
                     className="border border-gray-300 rounded-lg px-3 py-2 
                    focus:outline-none focus:ring-2 focus:ring-blue-500 
@@ -43,7 +53,7 @@ export function EditAccount({ currentAccount }: EditAccountProps): JSX.Element {
                 </label>
                 <select
                     name="type"
-                    value={currentAccount.type}
+                    value={updatedAccount.type}
                     onChange={handleChangeInNewAccount}
                     className="border border-gray-300 rounded-lg px-3 py-2 
                    focus:outline-none focus:ring-2 focus:ring-blue-500 
@@ -66,7 +76,7 @@ export function EditAccount({ currentAccount }: EditAccountProps): JSX.Element {
                 <input
                     type="number"
                     name="openingBalance"
-                    value={currentAccount.openingBalance}
+                    value={updatedAccount.openingBalance}
                     onChange={handleChangeInNewAccount}
                     className="border border-gray-300 rounded-lg px-3 py-2 
                    focus:outline-none focus:ring-2 focus:ring-blue-500 
@@ -80,7 +90,7 @@ export function EditAccount({ currentAccount }: EditAccountProps): JSX.Element {
                     type="checkbox"
                     id="active"
                     name="active"
-                    checked={currentAccount.active}
+                    checked={updatedAccount.active}
                     onChange={handleChangeInNewAccount}
                     className="h-4 w-4 text-blue-600 border-gray-300 rounded 
                    focus:ring-blue-500"
@@ -93,12 +103,12 @@ export function EditAccount({ currentAccount }: EditAccountProps): JSX.Element {
             {/* Submit Button */}
             <button
                 type="submit"
-                onClick={addNewAccount}
+                onClick={() => handleUpdate(updatedAccount)}
                 className="w-full bg-blue-600 text-white font-medium 
                  py-2.5 rounded-lg hover:bg-blue-700 
                  transition duration-200 shadow-md"
             >
-                Submit
+                Update
             </button>
         </div>
     )

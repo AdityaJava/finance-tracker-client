@@ -6,5 +6,6 @@ export interface AccountProps {
 }
 
 export interface EditAccountProps {
-    currentAccount: Account
+    currentAccount: Account,
+    handleUpdate: (updatedAccount: Account) => Promise<void>
 }
