@@ -24,6 +24,10 @@ export default function EachAccount({ element, loadAccounts }: AccountProps) {
         loadAccounts(0, 10);
     }
 
+    const handleCancel = () => {
+        setEditMode(false);
+    }
+
     return (
         (!editMode ?
             <div
@@ -65,6 +69,6 @@ export default function EachAccount({ element, loadAccounts }: AccountProps) {
                             alt="delete" />
                     </button>
                 </div>
-            </div> : <EditAccount currentAccount={element} handleUpdate={handleUpdate} />)
+            </div> : <EditAccount currentAccount={element} handleUpdate={handleUpdate} handleCancel={handleCancel} />)
     )
 }

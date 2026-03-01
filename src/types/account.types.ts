@@ -8,4 +8,5 @@ export interface AccountProps {
 export interface EditAccountProps {
     currentAccount: Account,
     handleUpdate: (updatedAccount: Account) => Promise<void>
+    handleCancel: () => void
 }
