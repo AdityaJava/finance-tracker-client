@@ -23,3 +23,8 @@ export async function deleteCategoryById(categoryId: number) {
     const response = await api.delete(CATEGORY_ENDPOINTS.BASE + '/' + categoryId)
     return response.data;
 }
+
+export async function updateCategory(category: import("../types/finance.types").Category) {
+    const response = await api.put(`${CATEGORY_ENDPOINTS.BASE}/${category.id}`, category);
+    return response.data;
+}

@@ -1,9 +1,9 @@
 import { useEffect, useState, type JSX } from "react";
 import type { Category } from "../../types/finance.types";
 import type { Page } from "../../types/page.types";
-import { deleteCategoryById, fetchCategories } from "../../js/Category";
-import deleteIcon from "../../assets/delete.png";
+import { fetchCategories } from "../../js/Category";
 import AddCategory from "./AddCategory";
+import EachCategory from "./EachCategory";
 
 export default function CategoryList(): JSX.Element {
     const initialCategoryPageState: Page<Category> = {
@@ -56,24 +56,7 @@ export default function CategoryList(): JSX.Element {
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {categoryPage.content.map((element) => (
-                            <div
-                                key={element.id}
-                                className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-5 border border-gray-100"
-                            >
-                                <div className="flex justify-between items-center mb-3">
-                                    <h2 className="text-lg font-semibold text-gray-800" onClick={startEditing}>
-                                        {element.name}
-                                    </h2>
-                                </div>
-                                <div className="m-2 ml-0">
-                                    <button
-                                        onClick={() => deleteCategory(element.id!)}
-                                        className="p-2 rounded-lg hover:bg-red-100 transition-colors duration-200"
-                                    >
-                                        <img src={deleteIcon} className="w-5 h-5" alt="delete" />
-                                    </button>
-                                </div>
-                            </div>
+                            <EachCategory key={element.id} element={element} loadCategories={loadCategories} />
                         ))}
                         <AddCategory loadCategories={loadCategories} />
                     </div>
