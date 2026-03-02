@@ -1,7 +1,7 @@
 import { useEffect, useState, type JSX } from "react";
 import type { Category } from "../../types/finance.types";
 import type { Page } from "../../types/page.types";
-import { fetchCategories } from "../../js/Category";
+import { deleteCategoryById, fetchCategories } from "../../js/Category";
 import AddCategory from "./AddCategory";
 import EachCategory from "./EachCategory";
 
