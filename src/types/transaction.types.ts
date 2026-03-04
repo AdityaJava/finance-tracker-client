@@ -1,4 +1,4 @@
-import type { Account } from "./finance.types";
+import type { Account, Category } from "./finance.types";
 
 export type TransactionType = | "INCOME" | "EXPENSE" | "TRANSFER";
 
@@ -9,7 +9,7 @@ export interface BaseFinancialTransaction {
     description?: string,
     fromAccount: Account,
     toAccount: Account,
-    categoryId: number
+    category: Category
 }
 
 export interface FinancialTransaction extends BaseFinancialTransaction {

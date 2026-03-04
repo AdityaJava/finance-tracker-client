@@ -18,7 +18,12 @@ export default function Sidebar(): JSX.Element {
                         Categories
                     </Link>
                 </li>
-                <li className="cursor-pointer hover:text-gray-300">Transaction</li>
+                <li className="cursor-pointer hover:text-gray-300">
+                    <Link to="/transactions" className="cursor-pointer hover:text-gray-300"
+                    >
+                        Transaction
+                    </Link>
+                </li>
             </ul>
         </div>
     )

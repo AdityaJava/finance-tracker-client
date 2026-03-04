@@ -7,6 +7,7 @@ import Register from "./component/auth/Register";
 import AccountList from "./component/account/AccountList";
 import CategoryList from "./component/category/CategoryList";
 import Layout from "./component/layout/Layout";
+import { TransactionList } from "./component/transaction/TransactionList";
 
 function App() {
 
@@ -23,6 +24,12 @@ function App() {
         <Route path="categories" element={
           <ProtectedRoute>
             <CategoryList />
+          </ProtectedRoute>
+        } />
+
+        <Route path="transactions" element={
+          <ProtectedRoute>
+            <TransactionList />
           </ProtectedRoute>
         } />
       </Route>
