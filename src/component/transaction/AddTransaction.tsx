@@ -1,11 +1,15 @@
-import { useState, type JSX } from "react";
+import { useEffect, useState, type JSX } from "react";
 import { type BaseFinancialTransaction } from "../../types/transaction.types";
 import type { Page } from "../../types/page.types";
-import type { Category } from "../../types/finance.types";
+import { type Account, type Category } from "../../types/finance.types";
 import { fetchCategories } from "../../js/Category";
 import Select from "react-select";
+import { fetchAccounts } from "../../js/Account";
 
 export function AddTransaction(): JSX.Element {
+    const [cashAccount, setCashAccount] = useState<Account>();
+    const [newTransaction, setNewTrasaction] = useState<BaseFinancialTransaction>();
+
     const initialNewTransactionState: BaseFinancialTransaction = {
         type: "EXPENSE",
         amount: 0,
@@ -15,6 +19,8 @@ export function AddTransaction(): JSX.Element {
         toAccount: null,
         category: null
     }
+
+
     const initialCategoryPageState: Page<Category> = {
         content: [],
         totalElements: 0,
@@ -23,8 +29,15 @@ export function AddTransaction(): JSX.Element {
         pageSize: 10
     };
 
+    const loadCashAccount = async () => {
+        const accountPage = await fetchAccounts(0, 1, "CASH");
+        setCashAccount(accountPage.content[0]);
+    }
 
-    const [newTransaction, setNewTrasaction] = useState<BaseFinancialTransaction>();
+    useEffect(() => {
+        loadCashAccount();
+    }, [])
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, type, value } = e.target;
@@ -40,7 +53,7 @@ export function AddTransaction(): JSX.Element {
             <div>
                 <select name="transactionType" value={newTransaction?.type} onChange={handleChange}>
                     <option value="">Select Type</option>
-                    {TRANSACTION_TYPES.map(type => {
+                    {TransactionTypes.map(type => {
                         return (<option key={type} value={type}>
                             {type}
                         </option>)

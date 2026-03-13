@@ -1,7 +1,6 @@
 import type { Account, Category } from "./finance.types";
 
 export type TransactionType = | "INCOME" | "EXPENSE" | "TRANSFER";
-
 export interface BaseFinancialTransaction {
     type: TransactionType,
     amount: number,

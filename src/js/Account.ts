@@ -4,11 +4,12 @@ import type { Account } from "../types/finance.types";
 import type { Page } from "../types/page.types";
 import api from "../interceptor/AuthenticationInterceptor";
 
-export async function fetchAccounts(pageNumber: number, pageSize: number): Promise<Page<Account>> {
+export async function fetchAccounts(pageNumber: number, pageSize: number, accountName: string): Promise<Page<Account>> {
     const response = await api.get(ACCOUNT_ENDPOINTS.ACCOUNTS_PAGE, {
         params: {
             page: pageNumber,
-            size: pageSize
+            size: pageSize,
+            name: accountName
         }
     });
     return response.data;
