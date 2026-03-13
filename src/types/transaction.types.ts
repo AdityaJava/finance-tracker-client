@@ -1,14 +1,16 @@
 import type { Account, Category } from "./finance.types";
 
-export type TransactionType = | "INCOME" | "EXPENSE" | "TRANSFER";
+export const TRANSACTION_TYPES = ["INCOME", "EXPENSE", "TRANSFER"];
+export type TransactionType = typeof TRANSACTION_TYPES[number];
+
 export interface BaseFinancialTransaction {
     type: TransactionType,
     amount: number,
     transactionDate: string,
     description?: string,
-    fromAccount: Account,
-    toAccount: Account,
-    category: Category
+    fromAccount: Account | null,
+    toAccount?: Account | null,
+    category: Category | null
 }
 
 export interface FinancialTransaction extends BaseFinancialTransaction {

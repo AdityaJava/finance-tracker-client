@@ -1,5 +1,5 @@
 import { useEffect, useState, type JSX } from "react";
-import { type BaseFinancialTransaction } from "../../types/transaction.types";
+import { TRANSACTION_TYPES, type BaseFinancialTransaction } from "../../types/transaction.types";
 import type { Page } from "../../types/page.types";
 import { type Account, type Category } from "../../types/finance.types";
 import { fetchCategories } from "../../js/Category";
@@ -8,7 +8,6 @@ import { fetchAccounts } from "../../js/Account";
 
 export function AddTransaction(): JSX.Element {
     const [cashAccount, setCashAccount] = useState<Account>();
-    const [newTransaction, setNewTrasaction] = useState<BaseFinancialTransaction>();
 
     const initialNewTransactionState: BaseFinancialTransaction = {
         type: "EXPENSE",
@@ -19,6 +18,8 @@ export function AddTransaction(): JSX.Element {
         toAccount: null,
         category: null
     }
+
+    const [newTransaction, setNewTrasaction] = useState<BaseFinancialTransaction>(initialNewTransactionState);
 
 
     const initialCategoryPageState: Page<Category> = {
@@ -38,6 +39,13 @@ export function AddTransaction(): JSX.Element {
         loadCashAccount();
     }, [])
 
+    useEffect(() => {
+        if (cashAccount) {
+            setNewTrasaction(prev => ({
+                ...prev, fromAccount: cashAccount
+            }));
+        }
+    }, [cashAccount]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, type, value } = e.target;
@@ -53,7 +61,7 @@ export function AddTransaction(): JSX.Element {
             <div>
                 <select name="transactionType" value={newTransaction?.type} onChange={handleChange}>
                     <option value="">Select Type</option>
-                    {TransactionTypes.map(type => {
+                    {TRANSACTION_TYPES.map(type => {
                         return (<option key={type} value={type}>
                             {type}
                         </option>)
