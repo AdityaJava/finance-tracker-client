@@ -8,6 +8,7 @@ import AccountList from "./component/account/AccountList";
 import CategoryList from "./component/category/CategoryList";
 import Layout from "./component/layout/Layout";
 import { TransactionList } from "./component/transaction/TransactionList";
+import { AddTransaction } from "./component/transaction/AddTransaction";
 
 function App() {
 
@@ -32,6 +33,12 @@ function App() {
             <TransactionList />
           </ProtectedRoute>
         } />
+        <Route path="addTransactions" element={
+          <ProtectedRoute>
+            <AddTransaction />
+          </ProtectedRoute>
+        } />
+
       </Route>
       <Route path="/login" element={
         <Login />
