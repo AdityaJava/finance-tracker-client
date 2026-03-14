@@ -29,8 +29,8 @@ export function AddTransaction(): JSX.Element {
         content: [],
         totalElements: 0,
         totalPages: 0,
-        pageNumber: 0,
-        pageSize: 3
+        number: 0,
+        size: 3
     };
     const [categoryPage, setCategoryPage] = useState<Page<Category>>(initialCategoryPageState);
 
@@ -47,8 +47,8 @@ export function AddTransaction(): JSX.Element {
         setCategoryPage(prev => ({
             ...categoriesPage,
             content: [...prev.content, ...categoriesPage.content],
-            pageNumber: prev.pageNumber + 1,
-            pageSize: prev.pageSize
+            pageNumber: prev.number + 1,
+            pageSize: categoriesPage.size
         }));
         setCategoriesLoading(false);
         categoriesLoadingRef.current = false;

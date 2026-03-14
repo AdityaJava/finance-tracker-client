@@ -10,8 +10,8 @@ export default function AccountList(): JSX.Element {
         content: [],
         totalElements: 0,
         totalPages: 0,
-        pageNumber: 0,
-        pageSize: 10
+        number: 0,
+        size: 10
     };
 
 
