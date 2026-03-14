@@ -1,4 +1,4 @@
-import { useEffect, useState, type JSX } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 import { TRANSACTION_TYPES, type BaseFinancialTransaction } from "../../types/transaction.types";
 import type { Page } from "../../types/page.types";
 import { type Account, type Category } from "../../types/finance.types";
@@ -9,6 +9,7 @@ import { useAsyncError } from "react-router-dom";
 
 export function AddTransaction(): JSX.Element {
     const [cashAccount, setCashAccount] = useState<Account>();
+    const categoriesLoadingRef = useRef<boolean>(false);
 
     const initialNewTransactionState: BaseFinancialTransaction = {
         type: "EXPENSE",
@@ -29,7 +30,7 @@ export function AddTransaction(): JSX.Element {
         totalElements: 0,
         totalPages: 0,
         pageNumber: 0,
-        pageSize: 10
+        pageSize: 2
     };
     const [categoryPage, setCategoryPage] = useState<Page<Category>>(initialCategoryPageState);
 
@@ -39,15 +40,21 @@ export function AddTransaction(): JSX.Element {
     }
 
     const loadCategories = async (pageNumber: number, pageSize: number): Promise<void> => {
+        if (categoriesLoadingRef.current) return;
+        categoriesLoadingRef.current = true;
         setCategoriesLoading(true);
         const categoriesPage = await fetchCategories(pageNumber, pageSize);
-        setCategoryPage(categoriesPage);
+        setCategoryPage(prev => ({
+            ...categoriesPage,
+            content: [...prev.content, ...categoriesPage.content],
+            pageNumber: prev.pageNumber + 1
+        }));
         setCategoriesLoading(false);
     };
 
     useEffect(() => {
         loadCashAccount();
-        loadCategories(0, 1);
+        loadCategories(categoryPage.pageNumber, categoryPage.pageSize);
     }, [])
 
     useEffect(() => {
@@ -66,6 +73,7 @@ export function AddTransaction(): JSX.Element {
     }
     const loadMoreCategories = () => {
         console.log("loadMoreCategories")
+        loadCategories(categoryPage.pageNumber, categoryPage.pageSize);
     }
 
     return (
@@ -83,14 +91,18 @@ export function AddTransaction(): JSX.Element {
                 </select>
             </div>
             <div>
-                <select name="transactionType" value={newTransaction?.type} onChange={handleChange} onScroll={loadMoreCategories}>
+                {/* <select name="transactionType" value={newTransaction?.type} onChange={handleChange} onScroll={loadMoreCategories}>
                     <option value="">Select Categories</option>
                     {categoryPage.content.map(type => {
                         return (<option key={type.id} value={type.name}>
                             {type.name}
                         </option>)
                     })}
-                </select>
+                </select> */}
+                <Select options={categoryPage.content.map(cat => ({
+                    value: cat.id,
+                    label: cat.name
+                }))} onMenuScrollToBottom={loadMoreCategories}></Select>
             </div>
 
         </div>
