@@ -47,6 +47,7 @@ export function AddTransaction(): JSX.Element {
 
     useEffect(() => {
         loadCashAccount();
+        loadCategories(0, 1);
     }, [])
 
     useEffect(() => {
@@ -64,7 +65,7 @@ export function AddTransaction(): JSX.Element {
         }
     }
     const loadMoreCategories = () => {
-
+        console.log("loadMoreCategories")
     }
 
     return (
