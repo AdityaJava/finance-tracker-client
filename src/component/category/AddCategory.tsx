@@ -7,52 +7,40 @@ type LoadCategoryProps = {
 };
 
 export default function AddCategory({ loadCategories }: LoadCategoryProps): JSX.Element {
-    const [newCategory, setNewCategory] = useState<Category>({
-        name: ""
-    });
+    const [newCategory, setNewCategory] = useState<Category>({ name: "" });
 
-    const handleChangeInNewCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setNewCategory({
-            ...newCategory,
-            [name]: value
-        });
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewCategory({ ...newCategory, [e.target.name]: e.target.value });
     };
 
     const addNewCategory = async () => {
-        console.log(newCategory);
-        const response = await createCategory(newCategory);
+        await createCategory(newCategory);
         setNewCategory({ name: "" });
         await loadCategories(0, 10);
-        console.log(response);
     };
 
     return (
-        <div className="max-w-md mx-auto bg-white shadow-lg rounded-2xl p-6 border border-gray-100">
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">Add New Category</h2>
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 max-w-sm">
+            <h2 className="text-base font-semibold text-slate-800 mb-5">New Category</h2>
 
-            <div className="space-y-5">
-                <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">Name</label>
+            <div className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Name</label>
                     <input
                         type="text"
                         name="name"
                         value={newCategory.name}
-                        onChange={handleChangeInNewCategory}
-                        className="border border-gray-300 rounded-lg px-3 py-2 
-                   focus:outline-none focus:ring-2 focus:ring-blue-500 
-                   focus:border-blue-500 transition"
+                        onChange={handleChange}
+                        placeholder="e.g. Groceries"
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                     />
                 </div>
 
                 <button
-                    type="submit"
                     onClick={addNewCategory}
-                    className="w-full bg-blue-600 text-white font-medium 
-                 py-2.5 rounded-lg hover:bg-blue-700 
-                 transition duration-200 shadow-md"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors shadow-sm"
                 >
-                    Submit
+                    Create Category
                 </button>
             </div>
         </div>

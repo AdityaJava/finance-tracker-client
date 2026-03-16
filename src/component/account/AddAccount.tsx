@@ -2,138 +2,97 @@ import { useState, type JSX } from "react";
 import { ACCOUNT_TYPES, type Account } from "../../types/finance.types";
 import { createAccount } from "../../js/Account";
 import type { LoadAccountProps } from "../../types/addaccount.types";
-// same as
-// function AddAccount(props: LoadAccountProps) {
-//     const loadAccounts = props.loadAccounts;
-// }
-// This is object  Destructuring
-export default function AddAccount({ loadAccounts }: LoadAccountProps): JSX.Element {
 
+export default function AddAccount({ loadAccounts }: LoadAccountProps): JSX.Element {
     const [newAccount, setNewAccount] = useState<Account>({
         name: "",
         type: "",
         openingBalance: 0,
         active: false
     });
-    const handleChangeInNewAccount = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, type, value } = e.target;
-
         let updatedValue: string | number | boolean;
-
         if (type === "checkbox") {
             updatedValue = (e.target as HTMLInputElement).checked;
-        }
-        else if (type === "number") {
+        } else if (type === "number") {
             updatedValue = Number(value);
+        } else {
+            updatedValue = value;
         }
-        else {
-            updatedValue = value
-        }
+        setNewAccount({ ...newAccount, [name]: updatedValue });
+    };
 
-        setNewAccount({
-            ...newAccount,
-            // [e.target.name]: e.target.value
-            [name]: updatedValue
-        });
-    }
     const addNewAccount = async () => {
-        console.log(newAccount);
-        const response = await createAccount(newAccount);
+        await createAccount(newAccount);
         await loadAccounts(0, 10);
-        console.log(response);
-    }
+    };
 
     return (
-        <div className="max-w-md mx-auto bg-white shadow-lg rounded-2xl p-6 border border-gray-100">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 max-w-lg">
+            <h2 className="text-base font-semibold text-slate-800 mb-5">New Account</h2>
 
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">
-                Add New Account
-            </h2>
-
-            <div className="space-y-5">
-
-                {/* Name */}
-                <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">
-                        Name
-                    </label>
+            <div className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Name</label>
                     <input
                         type="text"
                         name="name"
                         value={newAccount.name}
-                        onChange={handleChangeInNewAccount}
-                        className="border border-gray-300 rounded-lg px-3 py-2 
-                   focus:outline-none focus:ring-2 focus:ring-blue-500 
-                   focus:border-blue-500 transition"
+                        onChange={handleChange}
+                        placeholder="e.g. HDFC Savings"
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                     />
                 </div>
 
-                {/* Type */}
-                <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">
-                        Type
-                    </label>
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Type</label>
                     <select
                         name="type"
                         value={newAccount.type}
-                        onChange={handleChangeInNewAccount}
-                        className="border border-gray-300 rounded-lg px-3 py-2 
-                   focus:outline-none focus:ring-2 focus:ring-blue-500 
-                   focus:border-blue-500 transition bg-white"
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                     >
-                        <option value="">Select Type</option>
+                        <option value="">Select type</option>
                         {Object.values(ACCOUNT_TYPES).map((type) => (
-                            <option key={type} value={type}>
-                                {type}
-                            </option>
+                            <option key={type} value={type}>{type}</option>
                         ))}
                     </select>
                 </div>
 
-                {/* Opening Balance */}
-                <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">
-                        Opening Balance
-                    </label>
-                    <input
-                        type="number"
-                        name="openingBalance"
-                        value={newAccount.openingBalance}
-                        onChange={handleChangeInNewAccount}
-                        className="border border-gray-300 rounded-lg px-3 py-2 
-                   focus:outline-none focus:ring-2 focus:ring-blue-500 
-                   focus:border-blue-500 transition"
-                    />
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Opening Balance</label>
+                    <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">₹</span>
+                        <input
+                            type="number"
+                            name="openingBalance"
+                            value={newAccount.openingBalance}
+                            onChange={handleChange}
+                            className="w-full border border-gray-200 rounded-lg pl-7 pr-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                        />
+                    </div>
                 </div>
 
-                {/* Checkbox */}
-                <div className="flex items-center space-x-2">
+                <label className="flex items-center gap-2.5 cursor-pointer select-none">
                     <input
                         type="checkbox"
-                        id="active"
                         name="active"
                         checked={newAccount.active}
-                        onChange={handleChangeInNewAccount}
-                        className="h-4 w-4 text-blue-600 border-gray-300 rounded 
-                   focus:ring-blue-500"
+                        onChange={handleChange}
+                        className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                     />
-                    <label htmlFor="active" className="text-sm text-gray-700">
-                        Enable Account
-                    </label>
-                </div>
+                    <span className="text-sm text-slate-700">Mark as active</span>
+                </label>
 
-                {/* Submit Button */}
                 <button
-                    type="submit"
                     onClick={addNewAccount}
-                    className="w-full bg-blue-600 text-white font-medium 
-                 py-2.5 rounded-lg hover:bg-blue-700 
-                 transition duration-200 shadow-md"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors shadow-sm"
                 >
-                    Submit
+                    Create Account
                 </button>
-
             </div>
         </div>
-    )
+    );
 }

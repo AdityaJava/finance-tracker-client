@@ -3,6 +3,7 @@ import type { Category } from "./finance.types";
 export interface CategoryProps {
     element: Category;
     loadCategories: (pageNumber: number, pageSize: number) => Promise<void>;
+    deleteCategory: (id: number) => Promise<void>;
 }
 
 export interface EditCategoryProps {
