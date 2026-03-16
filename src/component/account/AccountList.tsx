@@ -1,9 +1,10 @@
-import { useEffect, useState, type JSX, type ReactEventHandler } from "react";
-import { ACCOUNT_TYPES, type Account } from "../../types/finance.types";
+import { useEffect, useState, type JSX } from "react";
+import { type Account } from "../../types/finance.types";
 import type { Page } from "../../types/page.types";
-import { createAccount, deleteAccountById, fetchAccounts } from "../../js/Account";
+import { fetchAccounts } from "../../js/Account";
 import AddAccount from "./AddAccount";
 import EachAccount from "./EachAccount";
+import Pagination from "../common/Pagination";
 
 export default function AccountList(): JSX.Element {
     const intialAccountPageState: Page<Account> = {
@@ -41,16 +42,30 @@ export default function AccountList(): JSX.Element {
                     <div className="flex justify-center items-center h-40">
                         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
                     </div>
-                ) : accontPage.content.length === 0 ? (
-                    <div className="text-center text-gray-500 py-10">
-                        No accounts found.
-                    </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {accontPage.content.map((element) => (
-                            <EachAccount loadAccounts={loadAccounts} element={element} />
-                        ))} <AddAccount loadAccounts={loadAccounts} />
-                    </div>
+                    <>
+                        {accontPage.content.length === 0 ? (
+                            <div className="text-center text-gray-500 py-10">
+                                No accounts found.
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {accontPage.content.map((element) => (
+                                    <EachAccount key={element.id} loadAccounts={loadAccounts} element={element} />
+                                ))}
+                                <AddAccount loadAccounts={loadAccounts} />
+                            </div>
+                        )}
+                        {accontPage.totalElements > 0 && (
+                            <Pagination
+                                currentPage={accontPage.number}
+                                totalPages={accontPage.totalPages}
+                                totalElements={accontPage.totalElements}
+                                pageSize={accontPage.size}
+                                onPageChange={(page) => loadAccounts(page, accontPage.size)}
+                            />
+                        )}
+                    </>
                 )}
             </div>
         </div >

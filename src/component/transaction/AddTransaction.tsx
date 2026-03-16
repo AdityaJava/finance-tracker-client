@@ -5,7 +5,6 @@ import { type Account, type Category } from "../../types/finance.types";
 import { fetchCategories } from "../../js/Category";
 import Select from "react-select";
 import { fetchAccounts } from "../../js/Account";
-import { useAsyncError } from "react-router-dom";
 
 export function AddTransaction(): JSX.Element {
     const [cashAccount, setCashAccount] = useState<Account>();
@@ -47,8 +46,6 @@ export function AddTransaction(): JSX.Element {
         setCategoryPage(prev => ({
             ...categoriesPage,
             content: [...prev.content, ...categoriesPage.content],
-            pageNumber: prev.number + 1,
-            pageSize: categoriesPage.size
         }));
         setCategoriesLoading(false);
         categoriesLoadingRef.current = false;
@@ -56,7 +53,7 @@ export function AddTransaction(): JSX.Element {
 
     useEffect(() => {
         loadCashAccount();
-        loadCategories(categoryPage.pageNumber, categoryPage.pageSize);
+        loadCategories(0, categoryPage.size);
     }, [])
 
     useEffect(() => {
@@ -74,8 +71,9 @@ export function AddTransaction(): JSX.Element {
         }
     }
     const loadMoreCategories = () => {
-        console.log("loadMoreCategories")
-        loadCategories(categoryPage.pageNumber, categoryPage.pageSize);
+        if (categoryPage.number + 1 < categoryPage.totalPages) {
+            loadCategories(categoryPage.number + 1, categoryPage.size);
+        }
     }
 
     return (

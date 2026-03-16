@@ -3,6 +3,7 @@ import type { FinancialTransaction } from "../../types/transaction.types";
 import type { Page } from "../../types/page.types";
 import EachTransaction from "./EachTransaction";
 import { getAllTransactions } from "../../js/Transaction";
+import Pagination from "../common/Pagination";
 
 export function TransactionList(): JSX.Element {
     const initialTransactionPageState: Page<FinancialTransaction> = {
@@ -16,13 +17,13 @@ export function TransactionList(): JSX.Element {
     const [transactionPage, setTransactionPage] =
         useState<Page<FinancialTransaction>>(initialTransactionPageState);
 
-    const getTransactionPage = async (): Promise<void> => {
-        const response = await getAllTransactions(0, 10);
+    const loadTransactions = async (pageNumber: number, pageSize: number): Promise<void> => {
+        const response = await getAllTransactions(pageNumber, pageSize);
         setTransactionPage(response);
     };
 
     useEffect(() => {
-        getTransactionPage();
+        loadTransactions(0, 10);
     }, []);
 
     return (
@@ -59,9 +60,15 @@ export function TransactionList(): JSX.Element {
                     </table>
                 </div>
 
-                <div className="mt-4 text-sm text-gray-500">
-                    Total Transactions: {transactionPage.totalElements}
-                </div>
+                {transactionPage.totalElements > 0 && (
+                    <Pagination
+                        currentPage={transactionPage.number}
+                        totalPages={transactionPage.totalPages}
+                        totalElements={transactionPage.totalElements}
+                        pageSize={transactionPage.size}
+                        onPageChange={(page) => loadTransactions(page, transactionPage.size)}
+                    />
+                )}
             </div>
         </div>
     );

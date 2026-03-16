@@ -4,6 +4,7 @@ import type { Page } from "../../types/page.types";
 import { deleteCategoryById, fetchCategories } from "../../js/Category";
 import AddCategory from "./AddCategory";
 import EachCategory from "./EachCategory";
+import Pagination from "../common/Pagination";
 
 export default function CategoryList(): JSX.Element {
     const initialCategoryPageState: Page<Category> = {
@@ -31,13 +32,10 @@ export default function CategoryList(): JSX.Element {
 
 
     const deleteCategory = async (elementId: number) => {
-        console.log(elementId);
         await deleteCategoryById(elementId);
-        loadCategories(0, 10);
+        loadCategories(categoryPage.number, categoryPage.size);
     };
-    const startEditing = () => {
-        console.log("Editing");
-    }
+
     return (
         <div className="min-h-screen bg-gray-50 p-6">
             <div className="max-w-6xl mx-auto">
@@ -49,17 +47,30 @@ export default function CategoryList(): JSX.Element {
                     <div className="flex justify-center items-center h-40">
                         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
                     </div>
-                ) : categoryPage.content.length === 0 ? (
-                    <div className="text-center text-gray-500 py-10">
-                        No categories found.
-                    </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {categoryPage.content.map((element) => (
-                            <EachCategory key={element.id} element={element} loadCategories={loadCategories} />
-                        ))}
-                        <AddCategory loadCategories={loadCategories} />
-                    </div>
+                    <>
+                        {categoryPage.content.length === 0 ? (
+                            <div className="text-center text-gray-500 py-10">
+                                No categories found.
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {categoryPage.content.map((element) => (
+                                    <EachCategory key={element.id} element={element} loadCategories={loadCategories} />
+                                ))}
+                                <AddCategory loadCategories={loadCategories} />
+                            </div>
+                        )}
+                        {categoryPage.totalElements > 0 && (
+                            <Pagination
+                                currentPage={categoryPage.number}
+                                totalPages={categoryPage.totalPages}
+                                totalElements={categoryPage.totalElements}
+                                pageSize={categoryPage.size}
+                                onPageChange={(page) => loadCategories(page, categoryPage.size)}
+                            />
+                        )}
+                    </>
                 )}
             </div>
         </div>
