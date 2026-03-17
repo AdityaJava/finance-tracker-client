@@ -1,4 +1,5 @@
 import { useState, type JSX } from "react";
+import axios from "axios";
 import { ACCOUNT_TYPES, type Account } from "../../types/finance.types";
 import { createAccount } from "../../js/Account";
 import type { LoadAccountProps } from "../../types/addaccount.types";
@@ -10,6 +11,7 @@ export default function AddAccount({ loadAccounts }: LoadAccountProps): JSX.Elem
         openingBalance: 0,
         active: false
     });
+    const [error, setError] = useState<string | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, type, value } = e.target;
@@ -21,12 +23,27 @@ export default function AddAccount({ loadAccounts }: LoadAccountProps): JSX.Elem
         } else {
             updatedValue = value;
         }
+        setError(null);
         setNewAccount({ ...newAccount, [name]: updatedValue });
     };
 
     const addNewAccount = async () => {
-        await createAccount(newAccount);
-        await loadAccounts(0, 10);
+        setError(null);
+        try {
+            await createAccount(newAccount);
+            await loadAccounts(0, 10);
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                const data = err.response?.data;
+                const backendMessage = typeof data?.message === "string" && data.message.trim() ? data.message : null;
+                const fallback = err.response?.status === 403
+                    ? "Access denied. Your session may have expired — please log in again."
+                    : `Request failed (${err.response?.status ?? "unknown error"}).`;
+                setError(backendMessage ?? fallback);
+            } else {
+                setError("An unexpected error occurred.");
+            }
+        }
     };
 
     return (
@@ -85,6 +102,10 @@ export default function AddAccount({ loadAccounts }: LoadAccountProps): JSX.Elem
                     />
                     <span className="text-sm text-slate-700">Mark as active</span>
                 </label>
+
+                {error && (
+                    <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>
+                )}
 
                 <button
                     onClick={addNewAccount}
