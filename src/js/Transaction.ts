@@ -1,6 +1,6 @@
 import api from "../interceptor/AuthenticationInterceptor";
 import type { Page } from "../types/page.types";
-import type { FinancialTransaction } from "../types/transaction.types";
+import type { CreateTransactionPayload, FinancialTransaction } from "../types/transaction.types";
 import { TRANSACTION_ENDPOINTS } from "./apiConstants";
 
 export async function getAllTransactions(pageNumber: number, size: number): Promise<Page<FinancialTransaction>> {
@@ -11,4 +11,8 @@ export async function getAllTransactions(pageNumber: number, size: number): Prom
         }
     });
     return response.data;
+}
+
+export async function createTransaction(payload: CreateTransactionPayload): Promise<void> {
+    await api.post(TRANSACTION_ENDPOINTS.BASE, payload);
 }

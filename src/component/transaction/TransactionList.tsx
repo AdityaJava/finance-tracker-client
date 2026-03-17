@@ -1,4 +1,5 @@
 import { useEffect, useState, type JSX } from "react";
+import { useNavigate } from "react-router-dom";
 import type { FinancialTransaction } from "../../types/transaction.types";
 import type { Page } from "../../types/page.types";
 import EachTransaction from "./EachTransaction";
@@ -14,6 +15,7 @@ export function TransactionList(): JSX.Element {
         size: 10
     };
 
+    const navigate = useNavigate();
     const [transactionPage, setTransactionPage] = useState<Page<FinancialTransaction>>(initialTransactionPageState);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -42,7 +44,10 @@ export function TransactionList(): JSX.Element {
                             </p>
                         )}
                     </div>
-                    <button className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors">
+                    <button
+                        onClick={() => navigate("/addTransactions")}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors"
+                    >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                         </svg>
